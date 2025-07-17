@@ -9,5 +9,36 @@
         android:id="@+id/listFragment"
         android:name="com.andpro.android.noteapp.ListFragment"
         android:label="fragment_list"
-        tools:layout="@layout/fragment_list" />
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/action_listFragment_to_textAddFragment"
+            app:destination="@id/textAddFragment" />
+        <argument
+            android:name="Title"
+            app:argType="string" />
+        <argument
+            android:name="Content"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_listFragment_to_imageAddFragment"
+            app:destination="@id/imageAddFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/textAddFragment"
+        android:name="com.andpro.android.noteapp.TextAddFragment"
+        android:label="fragment_text_add"
+        tools:layout="@layout/fragment_text_add" >
+        <action
+            android:id="@+id/action_textAddFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageAddFragment"
+        android:name="com.andpro.android.noteapp.ImageAddFragment"
+        android:label="fragment_image_add"
+        tools:layout="@layout/fragment_image_add" >
+        <action
+            android:id="@+id/action_imageAddFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
 </navigation>

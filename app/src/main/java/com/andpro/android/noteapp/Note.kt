@@ -5,6 +5,7 @@ import java.io.File
 sealed class Item() {
     data class Note(
         val title: String,
+        val content: String,
         val checked: Boolean
     ): Item()
 

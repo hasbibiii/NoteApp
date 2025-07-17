@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
 import com.andpro.android.noteapp.databinding.FragmentListBinding
 
 class Alert() {
@@ -41,12 +43,9 @@ class Alert() {
         var alertDialog = builder.show()
         _alertDialog = alertDialog
     }
-
-
 }
 
 class ListFragment : Fragment() {
-
 
     private var _binding: FragmentListBinding? = null
     private val binding: FragmentListBinding
@@ -56,6 +55,7 @@ class ListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Alert.initialize()
     }
 
     override fun onCreateView(
@@ -64,7 +64,18 @@ class ListFragment : Fragment() {
     ): View {
         _binding = FragmentListBinding.inflate(inflater, container, false)
         binding.addButton.setOnClickListener {
+            Alert.getInstance().showAlert(requireContext(), {
+                findNavController().navigate(R.id.action_listFragment_to_textAddFragment)
+                var new_note: Item.Note = Item.Note(
+                    title = ListFragmentArgs.fromBundle(requireArguments()).Title,
+                    content = ListFragmentArgs.fromBundle(requireArguments()).Content,
+                    checked = false
+                )
 
+            }, {
+                findNavController().navigate(R.id.action_imageAddFragment_to_listFragment)
+
+            })
         }
         val rootView = binding.root
         return rootView
