@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
@@ -55,7 +56,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
-    implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7")
+//    implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")

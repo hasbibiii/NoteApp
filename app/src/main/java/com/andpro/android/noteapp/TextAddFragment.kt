@@ -1,15 +1,23 @@
 package com.andpro.android.noteapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.andpro.android.noteapp.databinding.FragmentTextAddBinding
 
 
 class TextAddFragment : Fragment() {
+    companion object {
+        var FROM_TEXT_KEY = "FROM_TEXT_KEY"
+    }
+
+    private var bundle = Bundle()
     private var _binding: FragmentTextAddBinding? = null
     private val binding: FragmentTextAddBinding
         get() {
@@ -20,12 +28,29 @@ class TextAddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var binding = FragmentTextAddBinding.inflate(inflater, container, false)
+
+        _binding = FragmentTextAddBinding.inflate(inflater, container, false)
         binding.commit.setOnClickListener {
-            TextAddFragmentDirections.actionTextAddFragmentToListFragment(
-                binding.title.text.toString(),
-                binding.content.text.toString()
+            setFragmentResult(FROM_TEXT_KEY, bundleOf(FROM_TEXT_KEY to true))
+//            if (MultipleArgs.isNotEmpty(
+                    MultipleArgs.Text(
+                        binding.title.text.toString(),
+                        binding.content.text.toString()
+                    )
+//                )
+//            ) {
+
+            findNavController().navigate(
+                TextAddFragmentDirections.actionTextAddFragmentToListFragment(
+                    MultipleArgs.Text(
+                        binding.title.text.toString(),
+                        binding.content.text.toString()
+                    )
+                )
             )
+//            } else {
+//                Log.d("TAF", "This fool didn't type in anything")
+//            }
         }
         val rootView = binding.root
         return rootView

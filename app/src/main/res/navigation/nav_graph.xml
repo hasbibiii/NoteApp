@@ -13,15 +13,13 @@
         <action
             android:id="@+id/action_listFragment_to_textAddFragment"
             app:destination="@id/textAddFragment" />
-        <argument
-            android:name="Title"
-            app:argType="string" />
-        <argument
-            android:name="Content"
-            app:argType="string" />
         <action
             android:id="@+id/action_listFragment_to_imageAddFragment"
             app:destination="@id/imageAddFragment" />
+        <argument
+            android:name="Args"
+            app:argType="com.andpro.android.noteapp.MultipleArgs" />
+
     </fragment>
     <fragment
         android:id="@+id/textAddFragment"

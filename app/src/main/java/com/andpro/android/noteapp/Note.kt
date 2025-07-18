@@ -1,5 +1,6 @@
 package com.andpro.android.noteapp
 
+import android.graphics.Bitmap
 import java.io.File
 
 sealed class Item() {
@@ -11,7 +12,8 @@ sealed class Item() {
 
     data class Image(
         val title: String,
-        val image: File
+        val comment: String,
+        val image: Bitmap,
     ): Item()
 }
 

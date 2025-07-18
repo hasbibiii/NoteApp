@@ -20,6 +20,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Title"
@@ -40,7 +41,7 @@
             <Button
                 android:layout_width="122dp"
                 android:layout_height="wrap_content"
-                android:text="TAKE PHOTO"
+                android:text="NEW PIC"
                 android:layout_margin="10dp"
                 android:id="@+id/new_image"/>
             <Button
@@ -56,12 +57,14 @@
             android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Content"
+            android:id="@+id/comment"
+            android:hint="Comment"
             android:inputType="text"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_gravity="center"
+            android:id="@+id/commit"
             android:layout_height="wrap_content"
             android:text="COMMIT"/>
 
