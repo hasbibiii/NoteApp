@@ -15,9 +15,8 @@ import com.andpro.android.noteapp.databinding.FragmentTextAddBinding
 class TextAddFragment : Fragment() {
     companion object {
         var FROM_TEXT_KEY = "FROM_TEXT_KEY"
+        var FROM_KEY = "FROM_KEY"
     }
-
-    private var bundle = Bundle()
     private var _binding: FragmentTextAddBinding? = null
     private val binding: FragmentTextAddBinding
         get() {
@@ -31,15 +30,14 @@ class TextAddFragment : Fragment() {
 
         _binding = FragmentTextAddBinding.inflate(inflater, container, false)
         binding.commit.setOnClickListener {
-            setFragmentResult(FROM_TEXT_KEY, bundleOf(FROM_TEXT_KEY to true))
-//            if (MultipleArgs.isNotEmpty(
+            if (!MultipleArgs.isEmpty(
                     MultipleArgs.Text(
                         binding.title.text.toString(),
                         binding.content.text.toString()
                     )
-//                )
-//            ) {
-
+                )
+            ) {
+            setFragmentResult(FROM_KEY, bundleOf(FROM_TEXT_KEY to true))
             findNavController().navigate(
                 TextAddFragmentDirections.actionTextAddFragmentToListFragment(
                     MultipleArgs.Text(
@@ -48,9 +46,9 @@ class TextAddFragment : Fragment() {
                     )
                 )
             )
-//            } else {
-//                Log.d("TAF", "This fool didn't type in anything")
-//            }
+            } else {
+                Log.d("TAF", "This fool didn't type in anything")
+            }
         }
         val rootView = binding.root
         return rootView

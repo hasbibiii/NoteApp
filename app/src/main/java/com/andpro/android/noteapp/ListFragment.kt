@@ -38,7 +38,6 @@ class Alert() {
         var dialogView = LayoutInflater.from(context).inflate(R.layout.pick_type, null)
         var builder = AlertDialog.Builder(context)
             .setView(dialogView)
-            .setTitle("What would you like to add?")
         dialogView.findViewById<ImageButton>(R.id.add_text).setOnClickListener {
             note()
         }
@@ -68,9 +67,8 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentListBinding.inflate(inflater, container, false)
-        setFragmentResultListener(TextAddFragment.FROM_TEXT_KEY) { _, bundle ->
+        setFragmentResultListener(TextAddFragment.FROM_KEY) { _, bundle ->
             if (bundle.getBoolean(TextAddFragment.FROM_TEXT_KEY)) {
-                Log.v("LFFFFFFFF", "We are hereeeeeeeeeeeeeeeeeeeeeeee")
                 var new_note =
                     Item.Note(
                         content = (args.Args as MultipleArgs.Text).content,
@@ -82,6 +80,17 @@ class ListFragment : Fragment() {
                     "${new_note.title}",
                     Toast.LENGTH_SHORT
                 ).show()
+            } else if (bundle.getBoolean(ImageAddFragment.FROM_IMAGE_KEY)) {
+                var new_image = Item.Image(
+                    title = (args.Args as MultipleArgs.Image).title,
+                    comment = (args.Args as MultipleArgs.Image).comment,
+                    image = (args.Args as MultipleArgs.Image).image
+                )
+                Toast.makeText(
+                    (activity as AppCompatActivity),
+                    "${new_image.title}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
         binding.addButton.setOnClickListener {
@@ -90,6 +99,7 @@ class ListFragment : Fragment() {
                 findNavController().navigate(ListFragmentDirections.actionListFragmentToTextAddFragment())
 
             }, {
+                Alert.getInstance()._alertDialog.dismiss()
                 findNavController().navigate(ListFragmentDirections.actionListFragmentToImageAddFragment())
             })
         }
