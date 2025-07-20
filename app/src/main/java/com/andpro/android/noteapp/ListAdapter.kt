@@ -3,7 +3,8 @@ package com.andpro.android.noteapp
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.andpro.android.noteapp.databinding.NotelistitemBinding
+import com.andpro.android.noteapp.databinding.ImageListItemBinding
+import com.andpro.android.noteapp.databinding.NoteListItemBinding
 
 
 class Help() {
@@ -14,13 +15,21 @@ class Help() {
     }
 }
 
-class NoteListHolder(val binding: NotelistitemBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(note: Item.Note) {
+class NoteListHolder(val binding: NoteListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(note: ItemEntity.NoteEntity) {
         binding.title.setText(note.title)
     }
 }
 
-class ListAdapter(private val items: List<Item>, viewType: Int) :
+class ImageListHolder(val binding: ImageListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(_image: ItemEntity.ImageEntity) {
+        binding.title.setText(_image.title)
+        binding.image.setImageBitmap(_image.image)
+        binding.comment.setText(_image.comment)
+    }
+}
+
+class ListAdapter(private val items: MutableList<ItemEntity>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -31,9 +40,15 @@ class ListAdapter(private val items: List<Item>, viewType: Int) :
         var holder: RecyclerView.ViewHolder? = null
         when (viewType) {
             Help.VIEW_TYPE_NOTE -> {
-                val binding: NotelistitemBinding =
-                    NotelistitemBinding.inflate(layoutInflater, parent, false)
+                val binding: NoteListItemBinding =
+                    NoteListItemBinding.inflate(layoutInflater, parent, false)
                 holder = NoteListHolder(binding)
+            }
+
+            Help.VIEW_TYPE_IMAGE -> {
+                val binding: ImageListItemBinding =
+                    ImageListItemBinding.inflate(layoutInflater, parent, false)
+                holder = ImageListHolder(binding)
             }
         }
         return holder!!
@@ -44,12 +59,10 @@ class ListAdapter(private val items: List<Item>, viewType: Int) :
         position: Int
     ) {
         val item = items[position]
-        when (item) {
-            is Item.Note -> {
-                (holder as NoteListHolder).bind(item)
-            }
-
-            is Item.Image -> TODO()
+        if (item is ItemEntity.NoteEntity) {
+            (holder as NoteListHolder).bind(item)
+        } else if (item is ItemEntity.ImageEntity) {
+            (holder as ImageListHolder).bind(item)
         }
     }
 
@@ -59,11 +72,11 @@ class ListAdapter(private val items: List<Item>, viewType: Int) :
 
     override fun getItemViewType(position: Int): Int {
         when (items[position]) {
-            is Item.Note -> {
+            is ItemEntity.NoteEntity -> {
                 return Help.VIEW_TYPE_NOTE
             }
 
-            is Item.Image -> {
+            is ItemEntity.ImageEntity -> {
                 return Help.VIEW_TYPE_IMAGE
             }
 

@@ -124,6 +124,7 @@ class ImageAddFragment : Fragment() {
         } else if (resultCode == Activity.RESULT_OK && requestCode === REQUEST_CAMERA_CODE) {
             bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
             binding.image.setImageBitmap(bitmap)
+            originalBitMapState = bitmap.isMutable().toString()
         }
     }
 
