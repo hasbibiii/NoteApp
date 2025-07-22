@@ -9,7 +9,7 @@ sealed class MultipleArgs : Parcelable {
     companion object {
         fun isEmpty(theclass: MultipleArgs, _str: String = ""): Boolean {
             when (theclass) {
-                is MultipleArgs.Image -> {
+                is Image -> {
                     if (theclass.title == "" || theclass.comment == "" || _str == "true") {
                         return true
                     } else {
@@ -17,7 +17,7 @@ sealed class MultipleArgs : Parcelable {
                     }
                 }
 
-                is MultipleArgs.Text -> {
+                is Text -> {
                     if (theclass.title == "" || theclass.content == "" ) {
                         return true
                     } else {

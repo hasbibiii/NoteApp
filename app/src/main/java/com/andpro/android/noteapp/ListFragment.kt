@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.andpro.android.noteapp.database.ItemRepository
 import com.andpro.android.noteapp.databinding.FragmentListBinding
 import io.grpc.NameResolver
 import kotlinx.coroutines.delay
@@ -56,7 +55,7 @@ class Alert() {
 
 class ListFragment : Fragment() {
     private val args: ListFragmentArgs by navArgs()
-    lateinit private var LVM: ListViewModel
+//    lateinit private var LVM: ListViewModel
     private var _binding: FragmentListBinding? = null
     private val binding: FragmentListBinding
         get() {
@@ -65,7 +64,7 @@ class ListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        LVM = ViewModelProvider(this).get(ListViewModel::class.java)
+//        LVM = ViewModelProvider(this).get(ListViewModel::class.java)
         Alert.initialize()
     }
 
@@ -77,24 +76,24 @@ class ListFragment : Fragment() {
         setFragmentResultListener(TextAddFragment.FROM_KEY) { _, bundle ->
             if (bundle.getBoolean(TextAddFragment.FROM_TEXT_KEY)) {
                 var new_note =
-                    ItemEntity.NoteEntity(
+                    Item.Note(
                         content = (args.Args as MultipleArgs.Text).content,
                         title = (args.Args as MultipleArgs.Text).title,
                         checked = false
                     )
-                LVM.addNote(new_note)
+//                LVM.addNote(new_note)
                 Toast.makeText(
                     (activity as AppCompatActivity),
                     "Note: ${new_note.title}",
                     Toast.LENGTH_SHORT
                 ).show()
             } else if (bundle.getBoolean(ImageAddFragment.FROM_IMAGE_KEY)) {
-                var new_image = ItemEntity.ImageEntity(
+                var new_image = Item.Image(
                     title = (args.Args as MultipleArgs.Image).title,
                     comment = (args.Args as MultipleArgs.Image).comment,
                     image = (args.Args as MultipleArgs.Image).image
                 )
-                LVM.addImage(new_image)
+//                LVM.addImage(new_image)
 
                 Toast.makeText(
                     (activity as AppCompatActivity),
@@ -113,26 +112,26 @@ class ListFragment : Fragment() {
                 findNavController().navigate(ListFragmentDirections.actionListFragmentToImageAddFragment())
             })
         }
-        fun constructList(): MutableList<ItemEntity> {
-            val notes = LVM.getNotes()
-            val images = LVM.getImages()
-            val ItemList: MutableList<ItemEntity> = mutableListOf()
-            for(i in notes) {
-                ItemList.add(i)
-            }
-            for(t in images) {
-                ItemList.add(t)
-            }
+//        fun constructList(): MutableList<ItemEntity> {
+//            val notes = LVM.getNotes()
+//            val images = LVM.getImages()
+//            val ItemList: MutableList<ItemEntity> = mutableListOf()
+//            for(i in notes) {
+//                ItemList.add(i)
+//            }
+//            for(t in images) {
+//                ItemList.add(t)
+//            }
+//
+//            return ItemList
+//        }
 
-            return ItemList
-        }
-
-        LVM.notes.observe(viewLifecycleOwner) {newValue ->
-            binding.recycler.adapter = ListAdapter(constructList())
-        }
-        LVM.images.observe(viewLifecycleOwner) {newValue ->
-            binding.recycler.adapter = ListAdapter(constructList())
-        }
+//        LVM.notes.observe(viewLifecycleOwner) {newValue ->
+//            binding.recycler.adapter = ListAdapter(constructList())
+//        }
+//        LVM.images.observe(viewLifecycleOwner) {newValue ->
+//            binding.recycler.adapter = ListAdapter(constructList())
+//        }
         val rootView = binding.root
         return rootView
     }

@@ -16,20 +16,20 @@ class Help() {
 }
 
 class NoteListHolder(val binding: NoteListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(note: ItemEntity.NoteEntity) {
+    fun bind(note: Item.Note) {
         binding.title.setText(note.title)
     }
 }
 
 class ImageListHolder(val binding: ImageListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(_image: ItemEntity.ImageEntity) {
+    fun bind(_image: Item.Image) {
         binding.title.setText(_image.title)
         binding.image.setImageBitmap(_image.image)
         binding.comment.setText(_image.comment)
     }
 }
 
-class ListAdapter(private val items: MutableList<ItemEntity>) :
+class ListAdapter(private val items: MutableList<Item>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -59,9 +59,9 @@ class ListAdapter(private val items: MutableList<ItemEntity>) :
         position: Int
     ) {
         val item = items[position]
-        if (item is ItemEntity.NoteEntity) {
+        if (item is Item.Note) {
             (holder as NoteListHolder).bind(item)
-        } else if (item is ItemEntity.ImageEntity) {
+        } else if (item is Item.Image) {
             (holder as ImageListHolder).bind(item)
         }
     }
@@ -72,11 +72,11 @@ class ListAdapter(private val items: MutableList<ItemEntity>) :
 
     override fun getItemViewType(position: Int): Int {
         when (items[position]) {
-            is ItemEntity.NoteEntity -> {
+            is Item.Note -> {
                 return Help.VIEW_TYPE_NOTE
             }
 
-            is ItemEntity.ImageEntity -> {
+            is Item.Image -> {
                 return Help.VIEW_TYPE_IMAGE
             }
 
