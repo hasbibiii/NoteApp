@@ -4,6 +4,7 @@ plugins {
     id("com.google.gms.google-services")
     id("kotlin-parcelize")
     id("org.jetbrains.kotlin.kapt")
+    id("com.google.firebase.crashlytics")
     id("androidx.navigation.safeargs.kotlin")
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
@@ -60,6 +61,7 @@ dependencies {
 //    implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7")
     implementation ("androidx.room:room-runtime:2.7.2")
     implementation ("androidx.room:room-ktx:2.7.2")
+    implementation("com.google.firebase:firebase-crashlytics:18.6.1")
     kapt("androidx.room:room-compiler:2.7.2")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.recyclerview:recyclerview:1.3.2")

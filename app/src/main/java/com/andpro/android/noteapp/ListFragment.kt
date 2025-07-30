@@ -1,6 +1,7 @@
 package com.andpro.android.noteapp
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,13 +13,16 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.createBitmap
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.andpro.android.noteapp.database.ItemRepository
 import com.andpro.android.noteapp.databinding.FragmentListBinding
 import io.grpc.NameResolver
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -39,8 +43,8 @@ class Alert() {
     lateinit var _alertDialog: AlertDialog
 
     fun showAlert(context: Context, note: () -> Unit, image: () -> Unit) {
-        var dialogView = LayoutInflater.from(context).inflate(R.layout.pick_type, null)
-        var builder = AlertDialog.Builder(context)
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.pick_type, null)
+        val builder = AlertDialog.Builder(context)
             .setView(dialogView)
         dialogView.findViewById<ImageButton>(R.id.add_text).setOnClickListener {
             note()
@@ -48,14 +52,14 @@ class Alert() {
         dialogView.findViewById<ImageButton>(R.id.add_image).setOnClickListener {
             image()
         }
-        var alertDialog = builder.show()
+        val alertDialog = builder.show()
         _alertDialog = alertDialog
     }
 }
 
 class ListFragment : Fragment() {
     private val args: ListFragmentArgs by navArgs()
-//    lateinit private var LVM: ListViewModel
+    lateinit private var LVM: ListViewModel
     private var _binding: FragmentListBinding? = null
     private val binding: FragmentListBinding
         get() {
@@ -64,7 +68,9 @@ class ListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        LVM = ViewModelProvider(this).get(ListViewModel::class.java)
+        LVM = ViewModelProvider(this)[ListViewModel::class.java]
+        LVM.getImages()
+        LVM.getNotes()
         Alert.initialize()
     }
 
@@ -75,63 +81,54 @@ class ListFragment : Fragment() {
         _binding = FragmentListBinding.inflate(inflater, container, false)
         setFragmentResultListener(TextAddFragment.FROM_KEY) { _, bundle ->
             if (bundle.getBoolean(TextAddFragment.FROM_TEXT_KEY)) {
-                var new_note =
+                val new_note =
                     Item.Note(
                         content = (args.Args as MultipleArgs.Text).content,
-                        title = (args.Args as MultipleArgs.Text).title,
-                        checked = false
+                        title = (args.Args as MultipleArgs.Text).title
                     )
-//                LVM.addNote(new_note)
-                Toast.makeText(
-                    (activity as AppCompatActivity),
-                    "Note: ${new_note.title}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else if (bundle.getBoolean(ImageAddFragment.FROM_IMAGE_KEY)) {
-                var new_image = Item.Image(
-                    title = (args.Args as MultipleArgs.Image).title,
-                    comment = (args.Args as MultipleArgs.Image).comment,
-                    image = (args.Args as MultipleArgs.Image).image
-                )
-//                LVM.addImage(new_image)
+                viewLifecycleOwner.lifecycleScope.launch {
+                    LVM.addNote(new_note)
+                }
 
-                Toast.makeText(
-                    (activity as AppCompatActivity),
-                    "Image:${new_image.title}",
-                    Toast.LENGTH_SHORT
-                ).show()
+            } else if (bundle.getBoolean(ImageAddFragment.FROM_IMAGE_KEY)) {
+                val new_image = Item.Image(
+                    title = (args.Args as MultipleArgs.Image).title,
+                    comment = (args.Args as MultipleArgs.Image).comment
+//                    image = (args.Args as MultipleArgs.Image).image
+                )
+                viewLifecycleOwner.lifecycleScope.launch {
+                    LVM.addImage(new_image)
+                }
             }
         }
         binding.addButton.setOnClickListener {
             Alert.getInstance().showAlert(requireContext(), {
                 Alert.getInstance()._alertDialog.dismiss()
                 findNavController().navigate(ListFragmentDirections.actionListFragmentToTextAddFragment())
-
             }, {
                 Alert.getInstance()._alertDialog.dismiss()
                 findNavController().navigate(ListFragmentDirections.actionListFragmentToImageAddFragment())
             })
         }
-//        fun constructList(): MutableList<ItemEntity> {
-//            val notes = LVM.getNotes()
-//            val images = LVM.getImages()
-//            val ItemList: MutableList<ItemEntity> = mutableListOf()
-//            for(i in notes) {
-//                ItemList.add(i)
+
+//        fun constructList(): MutableList<Item> {
+//            val items: MutableList<Item> = mutableListOf()
+//            for (i in requireNotNull(LVM.Notes.value)) {
+//                items.add(i)
 //            }
-//            for(t in images) {
-//                ItemList.add(t)
+//            for (t in requireNotNull(LVM.Images.value)) {
+//                items.add(t)
 //            }
-//
-//            return ItemList
+//            return items
 //        }
 
-//        LVM.notes.observe(viewLifecycleOwner) {newValue ->
-//            binding.recycler.adapter = ListAdapter(constructList())
+        LVM.Notes.observe(viewLifecycleOwner) {
+            Log.d("LVM", "it changes!!!: ${LVM.Notes.value}")
+        }
+//        LVM.Notes.observe(viewLifecycleOwner) {
+//            binding.recycler.adapter = ListAdapter( constructList())
 //        }
-//        LVM.images.observe(viewLifecycleOwner) {newValue ->
-//            binding.recycler.adapter = ListAdapter(constructList())
-//        }
+
         val rootView = binding.root
         return rootView
     }

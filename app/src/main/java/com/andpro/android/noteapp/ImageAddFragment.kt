@@ -83,7 +83,6 @@ class ImageAddFragment : Fragment() {
             }
         }
         binding.commit.setOnClickListener {
-            Log.d("IAF", "${binding.title.text.toString()}")
             if (!MultipleArgs.isEmpty(
                     MultipleArgs.Image(
                         binding.title.text.toString(),
@@ -113,7 +112,7 @@ class ImageAddFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode === Activity.RESULT_OK && requestCode === REQUEST_IMAGE_CODE) {
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_CODE) {
             val imageUri = requireNotNull(data?.data)
             bitmap = MediaStore.Images.Media.getBitmap(
                 context?.contentResolver,

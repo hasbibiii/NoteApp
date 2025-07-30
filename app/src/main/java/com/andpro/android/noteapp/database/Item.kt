@@ -5,14 +5,13 @@ sealed class Item() {
 
     data class Note(
         val title: String,
-        val content: String,
-        val checked: Boolean
+        val content: String
     ): Item()
 
     data class Image(
         val title: String,
-        val comment: String,
-        val image: Bitmap,
+        val comment: String
+//        val image: Bitmap,
     ): Item()
 }
 

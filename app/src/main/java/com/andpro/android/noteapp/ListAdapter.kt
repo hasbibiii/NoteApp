@@ -18,13 +18,14 @@ class Help() {
 class NoteListHolder(val binding: NoteListItemBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(note: Item.Note) {
         binding.title.setText(note.title)
+        binding.content.setText(note.content)
     }
 }
 
 class ImageListHolder(val binding: ImageListItemBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(_image: Item.Image) {
         binding.title.setText(_image.title)
-        binding.image.setImageBitmap(_image.image)
+//        binding.image.setImageBitmap(_image.image)
         binding.comment.setText(_image.comment)
     }
 }
