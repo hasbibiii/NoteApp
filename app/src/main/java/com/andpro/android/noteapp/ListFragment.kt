@@ -93,8 +93,8 @@ class ListFragment : Fragment() {
             } else if (bundle.getBoolean(ImageAddFragment.FROM_IMAGE_KEY)) {
                 val new_image = Item.Image(
                     title = (args.Args as MultipleArgs.Image).title,
-                    comment = (args.Args as MultipleArgs.Image).comment
-//                    image = (args.Args as MultipleArgs.Image).image
+                    comment = (args.Args as MultipleArgs.Image).comment,
+                    image = (args.Args as MultipleArgs.Image).image
                 )
                 viewLifecycleOwner.lifecycleScope.launch {
                     LVM.addImage(new_image)
@@ -111,23 +111,23 @@ class ListFragment : Fragment() {
             })
         }
 
-//        fun constructList(): MutableList<Item> {
-//            val items: MutableList<Item> = mutableListOf()
-//            for (i in requireNotNull(LVM.Notes.value)) {
-//                items.add(i)
-//            }
-//            for (t in requireNotNull(LVM.Images.value)) {
-//                items.add(t)
-//            }
-//            return items
-//        }
+        fun constructList(): MutableList<Item> {
+            val items: MutableList<Item> = mutableListOf()
+            for (i in requireNotNull(LVM.Notes.value)) {
+                items.add(i)
+            }
+            for (t in requireNotNull(LVM.Images.value)) {
+                items.add(t)
+            }
+            return items
+        }
 
         LVM.Notes.observe(viewLifecycleOwner) {
-            Log.d("LVM", "it changes!!!: ${LVM.Notes.value}")
+            binding.recycler.adapter = ListAdapter(constructList())
         }
-//        LVM.Notes.observe(viewLifecycleOwner) {
-//            binding.recycler.adapter = ListAdapter( constructList())
-//        }
+        LVM.Notes.observe(viewLifecycleOwner) {
+            binding.recycler.adapter = ListAdapter(constructList())
+        }
 
         val rootView = binding.root
         return rootView

@@ -10,8 +10,8 @@ sealed class Item() {
 
     data class Image(
         val title: String,
-        val comment: String
-//        val image: Bitmap,
+        val comment: String,
+        val image: Bitmap,
     ): Item()
 }
 

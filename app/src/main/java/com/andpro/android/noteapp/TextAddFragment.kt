@@ -17,6 +17,7 @@ class TextAddFragment : Fragment() {
         var FROM_TEXT_KEY = "FROM_TEXT_KEY"
         var FROM_KEY = "FROM_KEY"
     }
+
     private var _binding: FragmentTextAddBinding? = null
     private val binding: FragmentTextAddBinding
         get() {
@@ -27,7 +28,6 @@ class TextAddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentTextAddBinding.inflate(inflater, container, false)
         binding.commit.setOnClickListener {
             if (!MultipleArgs.isEmpty(
@@ -37,15 +37,15 @@ class TextAddFragment : Fragment() {
                     )
                 )
             ) {
-            setFragmentResult(FROM_KEY, bundleOf(FROM_TEXT_KEY to true))
-            findNavController().navigate(
-                TextAddFragmentDirections.actionTextAddFragmentToListFragment(
-                    MultipleArgs.Text(
-                        binding.title.text.toString(),
-                        binding.content.text.toString()
+                setFragmentResult(FROM_KEY, bundleOf(FROM_TEXT_KEY to true))
+                findNavController().navigate(
+                    TextAddFragmentDirections.actionTextAddFragmentToListFragment(
+                        MultipleArgs.Text(
+                            binding.title.text.toString(),
+                            binding.content.text.toString()
+                        )
                     )
                 )
-            )
             } else {
                 Log.d("TAF", "This fool didn't type in anything")
             }

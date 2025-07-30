@@ -120,7 +120,7 @@ class ImageAddFragment : Fragment() {
             )
             originalBitMapState = bitmap.isMutable().toString()
             binding.image.setImageBitmap(bitmap)
-        } else if (resultCode == Activity.RESULT_OK && requestCode === REQUEST_CAMERA_CODE) {
+        } else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CAMERA_CODE) {
             bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
             binding.image.setImageBitmap(bitmap)
             originalBitMapState = bitmap.isMutable().toString()
