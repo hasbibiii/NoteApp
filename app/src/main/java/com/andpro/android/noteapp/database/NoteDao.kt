@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.andpro.android.noteapp.Item
+import java.util.UUID
 
 @Dao
 interface NoteDao {
@@ -11,5 +12,5 @@ interface NoteDao {
     suspend fun addNote(note: NoteEntity)
 
     @Query("SELECT * FROM Notes")
-    suspend fun getNotes(): MutableList<Item.Note>
+    suspend fun getNotes(): MutableList<NoteEntity>
 }

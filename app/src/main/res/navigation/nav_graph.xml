@@ -19,11 +19,17 @@
         <argument
             android:name="Args"
             app:argType="com.andpro.android.noteapp.MultipleArgs" />
+        <action
+            android:id="@+id/action_listFragment_to_imageViewFragment"
+            app:destination="@id/imageViewFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_noteViewFragment"
+            app:destination="@id/noteViewFragment" />
 
     </fragment>
     <fragment
         android:id="@+id/textAddFragment"
-        android:name="com.andpro.android.noteapp.TextAddFragment"
+        android:name="com.andpro.android.noteapp.Note.TextAddFragment"
         android:label="fragment_text_add"
         tools:layout="@layout/fragment_text_add" >
         <action
@@ -32,11 +38,29 @@
     </fragment>
     <fragment
         android:id="@+id/imageAddFragment"
-        android:name="com.andpro.android.noteapp.ImageAddFragment"
+        android:name="com.andpro.android.noteapp.Image.ImageAddFragment"
         android:label="fragment_image_add"
         tools:layout="@layout/fragment_image_add" >
         <action
             android:id="@+id/action_imageAddFragment_to_listFragment"
             app:destination="@id/listFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageViewFragment"
+        android:name="com.andpro.android.noteapp.Image.ImageViewFragment"
+        android:label="fragment_image_view"
+        tools:layout="@layout/fragment_image_view" >
+        <argument
+            android:name="id"
+            app:argType="java.util.UUID" />
+    </fragment>
+    <fragment
+        android:id="@+id/noteViewFragment"
+        android:name="com.andpro.android.noteapp.Note.NoteViewFragment"
+        tools:layout="@layout/fragment_note_view"
+        android:label="Note.NoteViewFragment" >
+        <argument
+            android:name="id"
+            app:argType="java.util.UUID" />
     </fragment>
 </navigation>

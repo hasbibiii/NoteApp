@@ -1,4 +1,4 @@
-package com.andpro.android.noteapp
+package com.andpro.android.noteapp.Image
 
 import android.app.Activity
 import android.content.Intent
@@ -13,13 +13,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.graphics.createBitmap
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
+import com.andpro.android.noteapp.MultipleArgs
 import com.andpro.android.noteapp.databinding.FragmentImageAddBinding
 import java.io.File
 import java.text.SimpleDateFormat
@@ -83,7 +82,7 @@ class ImageAddFragment : Fragment() {
             }
         }
         binding.commit.setOnClickListener {
-            if (!MultipleArgs.isEmpty(
+            if (!MultipleArgs.Companion.isEmpty(
                     MultipleArgs.Image(
                         binding.title.text.toString(),
                         binding.comment.text.toString(),

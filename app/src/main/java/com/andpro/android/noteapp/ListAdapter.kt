@@ -3,8 +3,10 @@ package com.andpro.android.noteapp
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.andpro.android.noteapp.database.ItemRepository
 import com.andpro.android.noteapp.databinding.ImageListItemBinding
 import com.andpro.android.noteapp.databinding.NoteListItemBinding
+import java.util.UUID
 
 
 class Help() {
@@ -15,22 +17,31 @@ class Help() {
     }
 }
 
+private var itemRepo = ItemRepository.getInstance()
+
 class NoteListHolder(val binding: NoteListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(note: Item.Note) {
+    fun bind(note: Item.Note, noteroute: (id: UUID) -> Unit) {
         binding.title.setText(note.title)
-        binding.content.setText(note.content)
+        binding.root.setOnClickListener {
+            noteroute(itemRepo.titleToID[note.title]!!)
+        }
     }
 }
 
 class ImageListHolder(val binding: ImageListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(_image: Item.Image) {
-        binding.title.setText(_image.title)
-        binding.image.setImageBitmap(_image.image)
-        binding.comment.setText(_image.comment)
+    fun bind(image: Item.Image, imageroute: (id: UUID) -> Unit) {
+        binding.title.setText(image.title)
+        binding.root.setOnClickListener {
+            imageroute(itemRepo.titleToID[image.title]!!)
+        }
     }
 }
 
-class ListAdapter(private val items: MutableList<Item>) :
+class ListAdapter(
+    private val items: MutableList<Item>,
+    private val noteroute: (id: UUID) -> Unit,
+    val imageroute: (id: UUID) -> Unit
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -61,9 +72,9 @@ class ListAdapter(private val items: MutableList<Item>) :
     ) {
         val item = items[position]
         if (item is Item.Note) {
-            (holder as NoteListHolder).bind(item)
+            (holder as NoteListHolder).bind(item, noteroute)
         } else if (item is Item.Image) {
-            (holder as ImageListHolder).bind(item)
+            (holder as ImageListHolder).bind(item, imageroute)
         }
     }
 
